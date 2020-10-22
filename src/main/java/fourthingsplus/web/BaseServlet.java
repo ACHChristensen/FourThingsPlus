@@ -1,6 +1,8 @@
 package fourthingsplus.web;
 
 import fourthingsplus.api.FourThingsPlus;
+import fourthingsplus.infrastructure.DBShoppingListRepository;
+import fourthingsplus.infrastructure.Database;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,9 +14,13 @@ public class BaseServlet extends HttpServlet {
     protected static final FourThingsPlus api;
 
     static {
-        api = new FourThingsPlus();
+        api = createFourThingsPlus();
     }
 
+    private static FourThingsPlus createFourThingsPlus() {
+        Database db = new Database();
+        return new FourThingsPlus(new DBShoppingListRepository(db));
+    }
 
     protected void render(String title, String content, HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
