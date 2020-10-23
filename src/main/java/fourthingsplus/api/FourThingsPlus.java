@@ -22,6 +22,9 @@ public class FourThingsPlus {
     }
 
     public ShoppingList createShoppingList(String name, String description) {
-        return shoppingLists.create(name, description);
+        return shoppingLists.create(
+                Utils.encodeHtml(name),
+                Utils.encodeHtml(description)
+        );
     }
 }
