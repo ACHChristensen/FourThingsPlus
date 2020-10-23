@@ -1,5 +1,7 @@
 package fourthingsplus.web.pages;
 
+import fourthingsplus.domain.shoppinglist.NoShoppingListExist;
+import fourthingsplus.domain.shoppinglist.ShoppingList;
 import fourthingsplus.web.BaseServlet;
 
 import javax.servlet.ServletException;
@@ -15,6 +17,13 @@ public class Lists extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        render("FourThings+ : Create a new list", "/WEB-INF/pages/lists.jsp", req, resp);
+
+        try {
+            ShoppingList list = api.findShoppingList(1);
+            render("FourThings+ : Create a new list", "/WEB-INF/pages/lists.jsp", req, resp);
+        } catch (NoShoppingListExist noShoppingListExist) {
+            resp.sendError(404, "Vi kunne ikke finde din liste.");
+        }
+
     }
 }

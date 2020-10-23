@@ -1,5 +1,6 @@
 package fourthingsplus.api;
 
+import fourthingsplus.domain.shoppinglist.NoShoppingListExist;
 import fourthingsplus.domain.shoppinglist.ShoppingList;
 import fourthingsplus.domain.shoppinglist.ShoppingListRepository;
 
@@ -20,4 +21,7 @@ public class FourThingsPlus {
         return shoppingLists.create(name);
     }
 
+    public ShoppingList findShoppingList(int i) throws NoShoppingListExist {
+        return shoppingLists.find(i);
+    }
 }

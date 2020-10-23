@@ -24,6 +24,7 @@ public class DBShoppingListRepository implements ShoppingListRepository {
         try (Connection conn = db.connect()) {
             return null;
         } catch (SQLException throwables) {
+            throwables.printStackTrace();
             throw new NoShoppingListExist();
         }
     }
