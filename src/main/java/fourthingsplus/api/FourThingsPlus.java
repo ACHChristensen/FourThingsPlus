@@ -17,11 +17,11 @@ public class FourThingsPlus {
         return VERSION;
     }
 
-    public ShoppingList create(String name) {
-        return shoppingLists.create(name);
-    }
-
     public ShoppingList findShoppingList(int i) throws NoShoppingListExist {
         return shoppingLists.find(i);
+    }
+
+    public ShoppingList createShoppingList(String name, String description) {
+        return shoppingLists.create(name, description);
     }
 }

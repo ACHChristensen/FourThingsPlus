@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
 
 public class BaseServlet extends HttpServlet {
     protected static final FourThingsPlus api;
@@ -22,6 +24,10 @@ public class BaseServlet extends HttpServlet {
         return new FourThingsPlus(new DBShoppingListRepository(db));
     }
 
+    protected void setup(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        req.setCharacterEncoding("UTF-8");
+    }
+
     protected void render(String title, String content, HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         req.setAttribute("version", api.getVersion());
@@ -29,4 +35,9 @@ public class BaseServlet extends HttpServlet {
         req.setAttribute("content", content);
         req.getRequestDispatcher("/WEB-INF/base.jsp").forward(req, resp);
     }
+
+    protected void log(HttpServletRequest req, String message) {
+        System.err.println("(" + LocalDateTime.now() + ") " + this.getClass().getCanonicalName() + " \"" + req.getRequestURI() + "\": " + message);
+    }
+
 }
