@@ -1,7 +1,7 @@
 package fourthingsplus.api;
 
-import fourthingsplus.domain.list.ShoppingList;
-import fourthingsplus.domain.list.ShoppingListRepository;
+import fourthingsplus.domain.shoppinglist.ShoppingList;
+import fourthingsplus.domain.shoppinglist.ShoppingListRepository;
 
 public class FourThingsPlus {
     private static final String VERSION = "0.1";

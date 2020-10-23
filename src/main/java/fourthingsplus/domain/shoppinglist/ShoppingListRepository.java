@@ -1,4 +1,4 @@
-package fourthingsplus.domain.list;
+package fourthingsplus.domain.shoppinglist;
 
 public interface ShoppingListRepository {
     Iterable <ShoppingList> findAll();

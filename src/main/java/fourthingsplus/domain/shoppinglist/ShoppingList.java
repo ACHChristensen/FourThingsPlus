@@ -1,4 +1,4 @@
-package fourthingsplus.domain.list;
+package fourthingsplus.domain.shoppinglist;
 
 public class ShoppingList {
     private final int id;

@@ -1,8 +1,8 @@
 package fourthingsplus.infrastructure;
 
-import fourthingsplus.domain.list.NoShoppingListExist;
-import fourthingsplus.domain.list.ShoppingList;
-import fourthingsplus.domain.list.ShoppingListRepository;
+import fourthingsplus.domain.shoppinglist.NoShoppingListExist;
+import fourthingsplus.domain.shoppinglist.ShoppingList;
+import fourthingsplus.domain.shoppinglist.ShoppingListRepository;
 
 import java.sql.Connection;
 import java.sql.SQLException;
