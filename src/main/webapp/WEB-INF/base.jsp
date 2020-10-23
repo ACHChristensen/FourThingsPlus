@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style.css"/>
 </head>
 <body class="d-flex flex-column h-100">
-<jsp:include page="/WEB-INF/navbar.jsp" flush="true"/>
+<jsp:include page="/WEB-INF/includes/navbar.jsp" flush="true"/>
 <main role="main" class="container flex-shrink-0">
     <jsp:include page="${requestScope.content}" flush="true"/>
 </main>
