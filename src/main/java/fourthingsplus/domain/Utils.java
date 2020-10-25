@@ -1,4 +1,4 @@
-package fourthingsplus.api;
+package fourthingsplus.domain;
 
 
 public class Utils {

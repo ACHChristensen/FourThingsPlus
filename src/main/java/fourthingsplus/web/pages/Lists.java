@@ -2,6 +2,8 @@ package fourthingsplus.web.pages;
 
 import fourthingsplus.domain.shoppinglist.NoShoppingListExist;
 import fourthingsplus.domain.shoppinglist.ShoppingList;
+import fourthingsplus.domain.shoppinglist.ShoppingListFactory;
+import fourthingsplus.domain.validation.ValidationError;
 import fourthingsplus.web.BaseServlet;
 
 import javax.servlet.ServletException;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.ParseException;
 
 @WebServlet({"/lists", "/lists/*"})
 public class Lists extends BaseServlet {
@@ -18,17 +21,21 @@ public class Lists extends BaseServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         setup(req, resp);
-        if (req.getPathInfo() == null) {
+        if (req.getPathInfo() == null || req.getPathInfo().isBlank()) {
             render("FourThings+: Create a new list", "/WEB-INF/pages/createlist.jsp", req, resp);
         } else {
-            int shoppinglistid = Integer.parseInt(req.getPathInfo().substring(1));
-            log(req, "Accessing Shopping List " + shoppinglistid);
             try {
-                ShoppingList shoppingList = api.findShoppingList(shoppinglistid);
-                req.setAttribute("list", shoppingList);
-                render("FourThings+: " + shoppingList.getName(), "/WEB-INF/pages/displaylist.jsp", req, resp);
-            } catch (NoShoppingListExist noShoppingListExist) {
-                resp.sendError(404, "Shopping list does not exist");
+                ShoppingList.Id id = ShoppingList.idFromString(req.getPathInfo().substring(1));
+                log(req, "Accessing Shopping List " + id);
+                try {
+                    var shoppingList = api.find(id);
+                    req.setAttribute("list", shoppingList);
+                    render("FourThings+: " + shoppingList.getName(), "/WEB-INF/pages/displaylist.jsp", req, resp);
+                } catch (NoShoppingListExist noShoppingListExist) {
+                    resp.sendError(404, "Shopping list does not exist");
+                }
+            } catch (ParseException e) {
+                resp.sendError(400, e.getMessage());
             }
 
         }
@@ -37,13 +44,14 @@ public class Lists extends BaseServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         setup(req, resp);
-        String name = req.getParameter("name");
-        String description = req.getParameter("description");
-        if (name == null || name.equals("")) {
-            resp.sendError(400, "Expected a name of the shopping list");
-        } else {
-            ShoppingList list = api.createShoppingList(name, description);
-            resp.sendRedirect(req.getContextPath() + "/lists/" + list.getId());
+        ShoppingListFactory factory = api.createShoppingList();
+        factory.setName(req.getParameter("name"));
+        factory.setDescription(req.getParameter("description"));
+        try {
+            ShoppingList.Id listId = factory.validateAndCommit();
+            resp.sendRedirect(req.getContextPath() + "/lists/" + listId);
+        } catch (ValidationError e) {
+            resp.sendError(400, e.getMessage());
         }
     }
 }

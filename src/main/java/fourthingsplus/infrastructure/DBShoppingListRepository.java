@@ -1,13 +1,14 @@
 package fourthingsplus.infrastructure;
 
-import fourthingsplus.domain.shoppinglist.NoShoppingListExist;
-import fourthingsplus.domain.shoppinglist.ShoppingList;
-import fourthingsplus.domain.shoppinglist.ShoppingListRepository;
+import fourthingsplus.domain.shoppinglist.*;
+import fourthingsplus.domain.validation.ValidationError;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DBShoppingListRepository implements ShoppingListRepository {
     private final Database db;
@@ -18,58 +19,98 @@ public class DBShoppingListRepository implements ShoppingListRepository {
 
     @Override
     public Iterable<ShoppingList> findAll() {
-        return null;
+        try (Connection conn = db.connect()) {
+            String sql = "SELECT * FROM shoppinglist";
+            var smt = conn.prepareStatement(sql);
+            smt.executeQuery();
+            ResultSet set = smt.getResultSet();
+            List<ShoppingList> lists = new ArrayList<ShoppingList>();
+            while (set.next()) {
+                lists.add(reconstituteShoppingList(set));
+            }
+            return lists;
+        } catch (SQLException throwables) {
+            throw new RuntimeException(throwables);
+        }
     }
 
     @Override
-    public ShoppingList find(int id) throws NoShoppingListExist {
+    public ShoppingList find(ShoppingList.Id id) throws NoShoppingListExist {
         try (Connection conn = db.connect()) {
             String sql = "SELECT * FROM shoppinglist WHERE id =?";
             var smt = conn.prepareStatement(sql);
-            smt.setInt(1, id);
+            smt.setInt(1, id.toInt());
             smt.executeQuery();
             ResultSet set = smt.getResultSet();
             if (set.next()) {
-                return parseShoppingList(set);
+                return reconstituteShoppingList(set);
             } else {
                 throw new NoShoppingListExist();
             }
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            throw new NoShoppingListExist();
+            throw new RuntimeException(throwables);
         }
     }
 
-    private ShoppingList parseShoppingList(ResultSet set) throws SQLException {
+    private ShoppingList reconstituteShoppingList(ResultSet set) throws SQLException {
         return new ShoppingList(
-                set.getInt("shoppinglist.id"),
+                ShoppingList.idFromInt(set.getInt("shoppinglist.id")),
                 set.getString("shoppinglist.name"),
-                set.getString("shoppinglist.description"));
+                set.getString("shoppinglist.description")) {
+
+            @Override
+            public Iterable<ShoppingListItem> findAllItems() {
+                try (Connection conn = db.connect()) {
+
+                } catch (SQLException throwables) {
+                    throw new RuntimeException(throwables);
+                }
+                return null;
+            }
+
+            @Override
+            public ShoppingListItem.Id createItem(String description) {
+                return null;
+            }
+
+            @Override
+            public void findItem(ShoppingListItem.Id id) {
+
+            }
+
+            @Override
+            public void updateItem(ShoppingListItem item) {
+
+            }
+
+            @Override
+            public void deleteItem(ShoppingListItem.Id id) {
+
+            }
+        };
     }
 
     @Override
-    public ShoppingList create(String name, String description) {
-        int newid;
-        try (Connection conn = db.connect()) {
-            String sql = "INSERT INTO shoppinglist (name, description) VALUES (?, ?)";
-            var smt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-            smt.setString(1, name);
-            smt.setString(2, description);
-            smt.executeUpdate();
-            ResultSet set = smt.getGeneratedKeys();
-            if (set.next()) {
-                newid = set.getInt(1);
-            } else {
-                throw new RuntimeException("Unexpected error");
+    public ShoppingListFactory create() {
+        return new ShoppingListFactory() {
+            @Override
+            public ShoppingList.Id commit() {
+                try (Connection conn = db.connect()) {
+                    String sql = "INSERT INTO shoppinglist (name, description) VALUES (?, ?)";
+                    var smt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+                    smt.setString(1, getName());
+                    smt.setString(2, getDescription());
+                    smt.executeUpdate();
+                    ResultSet set = smt.getGeneratedKeys();
+                    if (set.next()) {
+                        return ShoppingList.idFromInt(set.getInt(1));
+                    } else {
+                        throw new RuntimeException("Unexpected error");
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            return find(newid);
-        } catch (NoShoppingListExist e) {
-            throw new RuntimeException(e);
-        }
-
+        };
     }
 }
