@@ -11,3 +11,12 @@ CREATE TABLE shoppinglist (
     name VARCHAR(50) NOT NULL,
     description VARCHAR(256)
 );
+
+CREATE TABLE shoppinglist_item (
+    id int NOT NULL AUTO_INCREMENT,
+    shoppinglist_id int NOT NULL,
+    description VARCHAR(64),
+    active BIT(1),
+    PRIMARY KEY(id, shoppinglist_id),
+    FOREIGN KEY (shoppinglist_id) REFERENCING shoppinglist(id)
+);
