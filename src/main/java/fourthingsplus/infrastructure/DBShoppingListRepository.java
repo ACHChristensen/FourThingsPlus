@@ -2,6 +2,7 @@ package fourthingsplus.infrastructure;
 
 import fourthingsplus.domain.shoppinglist.NoShoppingListExist;
 import fourthingsplus.domain.shoppinglist.ShoppingList;
+import fourthingsplus.domain.shoppinglist.ShoppingListFactory;
 import fourthingsplus.domain.shoppinglist.ShoppingListRepository;
 
 import java.sql.Connection;
@@ -48,28 +49,32 @@ public class DBShoppingListRepository implements ShoppingListRepository {
     }
 
     @Override
-    public ShoppingList create(String name, String description) {
-        int newid;
-        try (Connection conn = db.connect()) {
-            String sql = "INSERT INTO shoppinglist (name, description) VALUES (?, ?)";
-            var smt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-            smt.setString(1, name);
-            smt.setString(2, description);
-            smt.executeUpdate();
-            ResultSet set = smt.getGeneratedKeys();
-            if (set.next()) {
-                newid = set.getInt(1);
-            } else {
-                throw new RuntimeException("Unexpected error");
+    public ShoppingListFactory create() {
+        return new ShoppingListFactory() {
+            @Override
+            protected ShoppingList commit() {
+                int newid;
+                try (Connection conn = db.connect()) {
+                    String sql = "INSERT INTO shoppinglist (name, description) VALUES (?, ?)";
+                    var smt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+                    smt.setString(1, getName());
+                    smt.setString(2, getDescription());
+                    smt.executeUpdate();
+                    ResultSet set = smt.getGeneratedKeys();
+                    if (set.next()) {
+                        newid = set.getInt(1);
+                    } else {
+                        throw new RuntimeException("Unexpected error");
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    return find(ShoppingList.idFromInt(newid));
+                } catch (NoShoppingListExist e) {
+                    throw new RuntimeException(e);
+                }
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            return find(ShoppingList.idFromInt(newid));
-        } catch (NoShoppingListExist e) {
-            throw new RuntimeException(e);
-        }
-
+        };
     }
 }

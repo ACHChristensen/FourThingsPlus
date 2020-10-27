@@ -3,6 +3,8 @@ package fourthingsplus.web.pages;
 import fourthingsplus.domain.shoppinglist.InvalidShoppingListId;
 import fourthingsplus.domain.shoppinglist.NoShoppingListExist;
 import fourthingsplus.domain.shoppinglist.ShoppingList;
+import fourthingsplus.domain.shoppinglist.ShoppingListFactory;
+import fourthingsplus.domain.validation.ValidationException;
 import fourthingsplus.web.BaseServlet;
 
 import javax.servlet.ServletException;
@@ -23,7 +25,7 @@ public class Lists extends BaseServlet {
         if (req.getPathInfo() == null) {
             render("FourThings+: Create a new list", "/WEB-INF/pages/createlist.jsp", req, resp);
         } else {
-            ShoppingList.Id id = null;
+            ShoppingList.Id id;
             try {
                 id = ShoppingList.idFromString(req.getPathInfo().substring(1));
             } catch (InvalidShoppingListId e) {
@@ -45,13 +47,14 @@ public class Lists extends BaseServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         setup(req, resp);
-        String name = req.getParameter("name");
-        String description = req.getParameter("description");
-        if (name == null || name.equals("")) {
-            resp.sendError(400, "Expected a name of the shopping list");
-        } else {
-            ShoppingList list = api.createShoppingList(name, description);
+        ShoppingListFactory factory = api.createShoppingList();
+        factory.setName(req.getParameter("name"));
+        factory.setDescription(req.getParameter("description"));
+        try {
+            ShoppingList list = factory.validateAndCommit();
             resp.sendRedirect(req.getContextPath() + "/lists/" + list.getId());
+        } catch (ValidationException e) {
+            resp.sendError(400, e.getMessage());
         }
     }
 }

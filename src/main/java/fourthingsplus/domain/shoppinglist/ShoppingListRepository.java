@@ -5,5 +5,5 @@ public interface ShoppingListRepository {
 
     ShoppingList find(ShoppingList.Id id) throws NoShoppingListExist;
 
-    ShoppingList create(String name, String description);
+    ShoppingListFactory create();
 }

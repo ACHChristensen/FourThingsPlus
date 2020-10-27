@@ -2,6 +2,7 @@ package fourthingsplus.api;
 
 import fourthingsplus.domain.shoppinglist.NoShoppingListExist;
 import fourthingsplus.domain.shoppinglist.ShoppingList;
+import fourthingsplus.domain.shoppinglist.ShoppingListFactory;
 import fourthingsplus.domain.shoppinglist.ShoppingListRepository;
 
 public class FourThingsPlus {
@@ -21,10 +22,7 @@ public class FourThingsPlus {
         return shoppingLists.find(i);
     }
 
-    public ShoppingList createShoppingList(String name, String description) {
-        return shoppingLists.create(
-                Utils.encodeHtml(name),
-                Utils.encodeHtml(description)
-        );
+    public ShoppingListFactory createShoppingList() {
+        return shoppingLists.create();
     }
 }
