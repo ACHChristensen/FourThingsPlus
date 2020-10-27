@@ -3,6 +3,7 @@ package fourthingsplus.web;
 import fourthingsplus.api.FourThingsPlus;
 import fourthingsplus.infrastructure.DBShoppingListRepository;
 import fourthingsplus.infrastructure.Database;
+import fourthingsplus.web.widget.Navbar;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -30,6 +31,7 @@ public class BaseServlet extends HttpServlet {
 
     protected void render(String title, String content, HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        req.setAttribute("navbar", new Navbar(req));
         req.setAttribute("version", api.getVersion());
         req.setAttribute("title", title);
         req.setAttribute("content", content);

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!doctype html>
 <html lang="en">
@@ -15,7 +16,7 @@
 
 
     <title>${requestScope.title}</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/style.css"/>
+    <link rel="stylesheet" href="<c:url value="/style.css"/>"/>
 </head>
 
 
