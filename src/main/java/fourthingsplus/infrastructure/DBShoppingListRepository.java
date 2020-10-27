@@ -22,11 +22,11 @@ public class DBShoppingListRepository implements ShoppingListRepository {
     }
 
     @Override
-    public ShoppingList find(int id) throws NoShoppingListExist {
+    public ShoppingList find(ShoppingList.Id id) throws NoShoppingListExist {
         try (Connection conn = db.connect()) {
             String sql = "SELECT * FROM shoppinglist WHERE id =?";
             var smt = conn.prepareStatement(sql);
-            smt.setInt(1, id);
+            smt.setInt(1, id.asInt());
             smt.executeQuery();
             ResultSet set = smt.getResultSet();
             if (set.next()) {
@@ -42,7 +42,7 @@ public class DBShoppingListRepository implements ShoppingListRepository {
 
     private ShoppingList parseShoppingList(ResultSet set) throws SQLException {
         return new ShoppingList(
-                set.getInt("shoppinglist.id"),
+                ShoppingList.idFromInt(set.getInt("shoppinglist.id")),
                 set.getString("shoppinglist.name"),
                 set.getString("shoppinglist.description"));
     }
@@ -66,7 +66,7 @@ public class DBShoppingListRepository implements ShoppingListRepository {
             throw new RuntimeException(e);
         }
         try {
-            return find(newid);
+            return find(ShoppingList.idFromInt(newid));
         } catch (NoShoppingListExist e) {
             throw new RuntimeException(e);
         }

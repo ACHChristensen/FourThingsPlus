@@ -11,4 +11,12 @@ public class Utils {
                 .replace("'", "&#x27;")
                 .replace("/", "&#x2F;");
     }
+
+    public static void example1() throws Exception {
+        throw new Exception("Hello, World!");
+    }
+
+    public static void example2() {
+        throw new RuntimeException("Hello, World!");
+    }
 }

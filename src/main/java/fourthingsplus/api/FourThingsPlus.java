@@ -17,7 +17,7 @@ public class FourThingsPlus {
         return VERSION;
     }
 
-    public ShoppingList findShoppingList(int i) throws NoShoppingListExist {
+    public ShoppingList find(ShoppingList.Id i) throws NoShoppingListExist {
         return shoppingLists.find(i);
     }
 

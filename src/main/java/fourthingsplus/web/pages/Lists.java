@@ -1,5 +1,6 @@
 package fourthingsplus.web.pages;
 
+import fourthingsplus.domain.shoppinglist.InvalidShoppingListId;
 import fourthingsplus.domain.shoppinglist.NoShoppingListExist;
 import fourthingsplus.domain.shoppinglist.ShoppingList;
 import fourthingsplus.web.BaseServlet;
@@ -22,10 +23,16 @@ public class Lists extends BaseServlet {
         if (req.getPathInfo() == null) {
             render("FourThings+: Create a new list", "/WEB-INF/pages/createlist.jsp", req, resp);
         } else {
-            int shoppinglistid = Integer.parseInt(req.getPathInfo().substring(1));
-            log(req, "Accessing Shopping List " + shoppinglistid);
+            ShoppingList.Id id = null;
             try {
-                ShoppingList shoppingList = api.findShoppingList(shoppinglistid);
+                id = ShoppingList.idFromString(req.getPathInfo().substring(1));
+            } catch (InvalidShoppingListId e) {
+                resp.sendError(400, "Invalid request");
+                return;
+            }
+            log(req, "Accessing Shopping List " + id);
+            try {
+                ShoppingList shoppingList = api.find(id);
                 req.setAttribute("list", shoppingList);
                 render("FourThings+: " + shoppingList.getName(), "/WEB-INF/pages/displaylist.jsp", req, resp);
             } catch (NoShoppingListExist noShoppingListExist) {
