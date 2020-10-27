@@ -23,11 +23,12 @@ public abstract class ShoppingListFactory {
     }
 
     public ShoppingList validateAndCommit() throws ValidationException {
+        ValidationException val = new ValidationException();
         if (this.name == null || this.name.isBlank())
-            throw new ValidationException("name", "should be set and not blank");
-        if (this.description == null)
-            throw new ValidationException("description", "should be set");
-
+            val.addProblem("name", "should be set and not blank");
+        if (this.description == null || description.isBlank())
+            val.addProblem("description", "should be set and not blank");
+        val.validate();
         return commit();
     }
 
