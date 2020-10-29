@@ -27,6 +27,7 @@ public class BaseServlet extends HttpServlet {
 
     protected void setup(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("UTF-8");
+        resp.setCharacterEncoding("UTF-8");
     }
 
     protected void render(String title, String content, HttpServletRequest req, HttpServletResponse resp)
