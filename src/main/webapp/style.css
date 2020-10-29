@@ -20,3 +20,7 @@ body {
 .error-status {
     font-size: 4rem;
 }
+
+.dropdown-menu-larger {
+    min-width: 20rem;
+}
