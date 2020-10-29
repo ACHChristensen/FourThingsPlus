@@ -6,8 +6,12 @@ CREATE USER fourthingsplus@localhost;
 GRANT ALL PRIVILEGES ON fourthingsplus.* TO fourthingsplus@localhost;
 
 USE fourthingsplus;
-CREATE TABLE shoppinglist (
-    id int PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(50) NOT NULL,
-    description VARCHAR(256)
+
+CREATE TABLE properties
+(
+    name VARCHAR(255) PRIMARY KEY,
+    value VARCHAR(255) NOT NULL
 );
+
+INSERT INTO properties (name, value) VALUES ("version", "0");
+

@@ -18,6 +18,10 @@ public class ValidationException extends Exception {
         if (!errors.isEmpty()) throw this;
     }
 
+    public List<Problem> getProblems() {
+        return errors;
+    }
+
     @Override
     public String getMessage() {
         return errors.toString();
