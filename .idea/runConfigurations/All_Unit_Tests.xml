@@ -11,6 +11,10 @@
         <option name="PATTERN" value="fourthingsplus.domain.*" />
         <option name="ENABLED" value="true" />
       </pattern>
+      <pattern>
+        <option name="PATTERN" value="fourthingsplus.infrastructure.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
     </extension>
     <option name="MAIN_CLASS_NAME" value="" />
     <option name="METHOD_NAME" value="" />

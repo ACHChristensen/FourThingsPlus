@@ -71,7 +71,7 @@ public class MainTest {
     /**
      * <b>As</b> a user
      * <b>I want to</b> be able to create and save a shoppinglist
-     * <b>so that</b> I can retrieve the shopping list.
+     * <b>so that</b> I can retrieve the shopping list later.
      */
     @Test
     void userStory1() throws ValidationException, NoShoppingListExist {
