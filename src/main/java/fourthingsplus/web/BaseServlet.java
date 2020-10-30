@@ -22,6 +22,7 @@ public class BaseServlet extends HttpServlet {
 
     private static FourThingsPlus createFourThingsPlus() {
         Database db = new Database();
+        db.runMigrations();
         return new FourThingsPlus(new DBShoppingListRepository(db));
     }
 

@@ -14,7 +14,7 @@ public class Database {
 
     public Database(String url, String user) {
         this.URL = url == null ? "jdbc:mysql://localhost:3306/fourthingsplus?serverTimezone=CET" : url;
-        this.USER = user == null ? "fouthingsplus" : user;
+        this.USER = user == null ? "fourthingsplus" : user;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
