@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ShoppingListTest {
+class ShoppingListTest {
 
     @Test
     void idFromString_shouldParseValidId() throws InvalidShoppingListId {
@@ -15,13 +15,9 @@ public class ShoppingListTest {
 
     @Test
     void idFromString_shouldThrowExceptionOnBadInput() {
-        assertThrows(InvalidShoppingListId.class, () -> {
-            ShoppingList.idFromString("");
-        });
+        assertThrows(InvalidShoppingListId.class, () -> ShoppingList.idFromString(""));
 
-        assertThrows(InvalidShoppingListId.class, () -> {
-            ShoppingList.idFromString("not_a_number");
-        });
+        assertThrows(InvalidShoppingListId.class, () -> ShoppingList.idFromString("not_a_number"));
     }
 
     @Test

@@ -3,9 +3,11 @@ package fourthingsplus.web.widget;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Navbar {
+
+    private static final String WEBPAGE_NAME = "FourThings+";
+
     private final HttpServletRequest request;
 
     public Navbar(HttpServletRequest request) {
@@ -13,8 +15,9 @@ public class Navbar {
     }
 
     public String getWebpageName() {
-        return "FourThings+";
+        return WEBPAGE_NAME;
     }
+
 
     private final List<Item> items = List.of(
             new Item("Home", "/", false),

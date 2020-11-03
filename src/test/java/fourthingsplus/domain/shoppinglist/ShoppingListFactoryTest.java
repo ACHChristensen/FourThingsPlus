@@ -1,13 +1,12 @@
 package fourthingsplus.domain.shoppinglist;
 
 import fourthingsplus.domain.validation.ValidationException;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ShoppingListFactoryTest {
+class ShoppingListFactoryTest {
 
     TestShoppingListFactory factory;
 
@@ -36,9 +35,7 @@ public class ShoppingListFactoryTest {
         factory.setDescription(null);
 
         // Action
-        ValidationException e = assertThrows(ValidationException.class, () -> {
-            factory.validateAndCommit();
-        });
+        ValidationException e = assertThrows(ValidationException.class, () -> factory.validateAndCommit());
 
         // Test
         assertFalse(factory.wasCommitted);

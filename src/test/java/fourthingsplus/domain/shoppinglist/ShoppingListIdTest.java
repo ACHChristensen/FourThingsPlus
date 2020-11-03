@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ShoppingListIdTest {
+class ShoppingListIdTest {
 
     @Test
-    void asInt_shouldBeConstructorInt() throws InvalidShoppingListId {
-        assertEquals(ShoppingList.idFromInt(102).asInt(), 102);
+    void asInt_shouldBeConstructorInt() {
+        assertEquals(102, ShoppingList.idFromInt(102).asInt());
     }
 }

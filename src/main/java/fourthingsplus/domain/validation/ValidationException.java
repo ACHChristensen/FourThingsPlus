@@ -5,10 +5,7 @@ import java.util.List;
 
 public class ValidationException extends Exception {
 
-    private final List<Problem> errors = new ArrayList<Problem>();
-
-    public ValidationException() {
-    }
+    private final List<Problem> errors = new ArrayList<>();
 
     public void addProblem(String field, String message) {
         errors.add(new Problem(field, message));

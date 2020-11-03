@@ -53,26 +53,26 @@ public class ShoppingList {
     @Override
     public String toString() {
         return "ShoppingList{" +
-                "id=" + id +
+                "asInt=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';
     }
 
     public static class Id {
-        private final int id;
+        private final int asInt;
 
-        public Id(int id) {
-            this.id = id;
+        public Id(int asInt) {
+            this.asInt = asInt;
         }
 
         @Override
         public String toString() {
-            return "" + id;
+            return "" + asInt;
         }
 
         public int asInt() {
-            return id;
+            return asInt;
         }
 
         @Override
@@ -80,12 +80,12 @@ public class ShoppingList {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Id id1 = (Id) o;
-            return id == id1.id;
+            return asInt == id1.asInt;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(id);
+            return Objects.hash(asInt);
         }
     }
 }

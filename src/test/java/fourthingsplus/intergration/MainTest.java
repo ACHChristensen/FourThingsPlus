@@ -23,7 +23,7 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Tag("integration-test")
-public class MainTest {
+class MainTest {
 
     FourThingsPlus api;
 

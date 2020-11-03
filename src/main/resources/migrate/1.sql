@@ -1,6 +1,6 @@
 CREATE TABLE shoppinglist
 (
-    id          int PRIMARY KEY AUTO_INCREMENT,
+    asInt       int PRIMARY KEY AUTO_INCREMENT,
     name        VARCHAR(50) NOT NULL,
     description VARCHAR(256)
 );
