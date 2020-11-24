@@ -18,6 +18,13 @@ public class FourThingsPlus {
         return VERSION;
     }
 
+    /**
+     * Find a shopping list id
+     *
+     * @param i the id of the shopping list
+     * @return The shopping this if it exist
+     * @throws NoShoppingListExist
+     */
     public ShoppingList find(ShoppingList.Id i) throws NoShoppingListExist {
         return shoppingLists.find(i);
     }

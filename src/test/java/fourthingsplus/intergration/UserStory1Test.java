@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.Connection;
@@ -23,7 +22,7 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Tag("integration-test")
-class MainTest {
+class UserStory1Test {
 
     FourThingsPlus api;
 
@@ -40,7 +39,7 @@ class MainTest {
         String URL = "jdbc:mysql://localhost:3306/?serverTimezone=CET";
         String USER = "fourthingsplustest";
 
-        InputStream stream = MainTest.class.getClassLoader().getResourceAsStream("init.sql");
+        InputStream stream = UserStory1Test.class.getClassLoader().getResourceAsStream("init.sql");
         if (stream == null) throw new RuntimeException("init.sql");
         try (Connection conn = DriverManager.getConnection(URL, USER, null)) {
             conn.setAutoCommit(false);

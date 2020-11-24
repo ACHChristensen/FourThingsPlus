@@ -1,6 +1,7 @@
 package fourthingsplus.web.pages;
 
 import fourthingsplus.web.BaseServlet;
+import fourthingsplus.web.svg.Svg;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +15,7 @@ public class Index extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        req.setAttribute("chessboard", Svg.chessboard().toString());
         render("FourThings+", "/WEB-INF/pages/index.jsp", req, resp);
     }
 }
