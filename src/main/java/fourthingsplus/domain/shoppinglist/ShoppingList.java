@@ -53,7 +53,7 @@ public class ShoppingList {
     @Override
     public String toString() {
         return "ShoppingList{" +
-                "asInt=" + id +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';

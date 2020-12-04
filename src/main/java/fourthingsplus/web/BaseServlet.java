@@ -39,8 +39,4 @@ public class BaseServlet extends HttpServlet {
         req.getRequestDispatcher("/WEB-INF/base.jsp").forward(req, resp);
     }
 
-    protected void log(HttpServletRequest req, String message) {
-        System.err.println("(" + LocalDateTime.now() + ") " + this.getClass().getCanonicalName() + " \"" + req.getRequestURI() + "\": " + message);
-    }
-
 }

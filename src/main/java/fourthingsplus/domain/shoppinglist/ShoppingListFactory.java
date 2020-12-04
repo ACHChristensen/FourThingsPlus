@@ -1,8 +1,12 @@
 package fourthingsplus.domain.shoppinglist;
 
 import fourthingsplus.domain.validation.ValidationException;
+import org.slf4j.Logger;
+
+import static org.slf4j.LoggerFactory.getLogger;
 
 public abstract class ShoppingListFactory {
+    private static final Logger log = getLogger(ShoppingListFactory.class);
     private String name;
     private String description;
 
@@ -29,7 +33,10 @@ public abstract class ShoppingListFactory {
         if (this.description == null || description.isBlank())
             val.addProblem("description", "should be set and not blank");
         val.validate();
-        return commit();
+        ShoppingList c = commit();
+        log.info("Successfully created a shopping list: {}", c.getId());
+        log.debug(String.valueOf(c));
+        return c;
     }
 
     protected abstract ShoppingList commit();
