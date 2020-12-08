@@ -40,38 +40,30 @@ public class Sliders extends BaseServlet {
             System.out.println(svg);
             return svg.toString();
         }
+
+        public static Carport fromSession(HttpSession session) {
+            Carport carport = (Carport) session.getAttribute("carport");
+            if (carport == null) {
+                carport = new Carport(200, 200);
+                session.setAttribute("carport", carport);
+            }
+            return carport;
+        }
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-
-        Carport carport = (Carport) session.getAttribute("carport");
-        if (carport == null) {
-            carport = new Carport(200, 200);
-            session.setAttribute("carport", carport);
-        }
-
-
+        Carport.fromSession(session);
         render("sliders", "/WEB-INF/pages/sliders.jsp", req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-
-        Carport carport = (Carport) session.getAttribute("carport");
-        if (carport == null) {
-            carport = new Carport(200, 200);
-            session.setAttribute("carport", carport);
-        }
-
+        Carport carport = Carport.fromSession(session);
         carport.width = Integer.parseInt((String) req.getParameter("carport_width"));
         carport.height = Integer.parseInt((String) req.getParameter("carport_height"));
-
-        // todo draw stuff
-
-
         resp.sendRedirect(req.getContextPath() + "/sliders");
     }
 }

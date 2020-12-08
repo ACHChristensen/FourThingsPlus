@@ -22,20 +22,36 @@ public class DBShoppingListRepository implements ShoppingListRepository {
     @Override
     public ShoppingList find(ShoppingList.Id id) throws NoShoppingListExist {
         try (Connection conn = db.connect()) {
-            String sql = "SELECT * FROM shoppinglist WHERE id =?";
-            try (var smt = conn.prepareStatement(sql)) {
-                smt.setInt(1, id.asInt());
-                smt.executeQuery();
-                ResultSet set = smt.getResultSet();
-                if (set.next()) {
-                    return parseShoppingList(set);
-                } else {
-                    throw new NoShoppingListExist();
+            try {
+                conn.setAutoCommit(false);
+
+                String insert = "INSERT INTO shoppinglist (name) VALUES ('hello')";
+                try (var smt = conn.prepareStatement(insert)) {
+                    smt.executeUpdate();
                 }
+
+                String sql = "SELECT * FROM shoppinglist WHERE id =?";
+                try (var smt = conn.prepareStatement(sql)) {
+                    smt.setInt(1, id.asInt());
+                    smt.executeQuery();
+                    ResultSet set = smt.getResultSet();
+                    if (set.next()) {
+                        var val = parseShoppingList(set);
+                        conn.commit();
+                        return val;
+                    } else {
+                        conn.rollback();
+                        throw new NoShoppingListExist();
+                    }
+                }
+            } catch (SQLException e) {
+                conn.rollback();
+                throw new DBRuntimeException(e);
+            } finally {
+                conn.setAutoCommit(true);
             }
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            throw new NoShoppingListExist();
+            throw new DBRuntimeException(throwables);
         }
     }
 

@@ -7,9 +7,11 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="content">
-    <div>
-        ${carport.drawing}
-    </div>
+    <c:if test="${carport != null}">
+        <div>
+            ${carport.drawing}
+        </div>
+    </c:if>
     <form method="post">
         <div class="form-row">
             <div class="form-group col-md-6">

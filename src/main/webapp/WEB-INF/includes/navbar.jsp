@@ -17,6 +17,14 @@
             </c:forEach>
         </ul>
     </div>
+
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="<c:url value="/sliders"/>">Slider</a>
+        </li>
+    </ul>
+
+
     <c:choose>
         <%--@elvariable id="user" type="java.lang.String"--%>
         <c:when test="${user == null}">
@@ -46,7 +54,6 @@
         <c:otherwise>
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-
                     <a class="nav-link" href="<c:url value="/user"/>">
                         <svg width="1.2em" height="1.2em" viewBox="0 0 16 16" class="bi bi-shield-lock"
                              fill="currentColor" xmlns="http://www.w3.org/2000/svg">

@@ -1,0 +1,22 @@
+@startuml
+| Thread 1 |
+:t = new Thread(..);
+:t.start();
+fork
+:t.interrupt();
+:t.join();
+| Thread 2 |
+forkagain
+repeat :sleep(100);
+:checkUserInput();
+repeat while (not interrupted)
+detach
+
+| Thread 2 |
+:catch InterruptedExp.;
+note right: thrown by t.interrupt()
+
+| Thread 1 |
+endfork
+stop
+@enduml
