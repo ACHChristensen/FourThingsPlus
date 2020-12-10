@@ -37,13 +37,16 @@ public class Sliders extends BaseServlet {
             Svg svg = new Svg(400, 400, "-100 -100 600 600");
             svg.add(new Rect(0, 0, getWidth(), getHeight()).withStyle("fill:none; stroke-width: 2; stroke: black"));
             svg.add(new Rect(-50, -50, 500, 500).withStyle("fill:none; stroke-width: 5; stroke: gray"));
-            System.out.println(svg);
             return svg.toString();
         }
 
         public static Carport fromSession(HttpSession session) {
+            return fromSession(session, true);
+        }
+
+        public static Carport fromSession(HttpSession session, boolean create) {
             Carport carport = (Carport) session.getAttribute("carport");
-            if (carport == null) {
+            if (carport == null && create) {
                 carport = new Carport(200, 200);
                 session.setAttribute("carport", carport);
             }

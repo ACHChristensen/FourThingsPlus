@@ -1,0 +1,29 @@
+@startuml
+scale 350 width
+
+state "/" as index
+
+[*] -> index
+
+state "users" as x {
+
+    state "orders/" as x_orders : a list of orders
+    state "orders/{id}" as x_order_details : shows the order details
+
+    x_orders -> x_order_details
+}
+
+state "admins" as y {
+
+    state "orders/" as y_orders : a list of orders
+    state "orders/{id}" as y_order_details : shows the order details
+
+    [*] -> y_orders
+    y_orders -> y_order_details
+}
+
+index -> y
+index -> x
+
+
+@enduml
